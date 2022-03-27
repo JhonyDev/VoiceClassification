@@ -38,11 +38,9 @@ public class FormPrediction extends AppCompatActivity {
         setContentView(R.layout.activity_form_prediction);
         loadingDialog = new Dialog(this);
         DialogUtils.initLoadingDialog(loadingDialog);
-
         recordBtn = findViewById(R.id.record_btn);
         timer = findViewById(R.id.record_timer);
         filenameText = findViewById(R.id.record_filename);
-
     }
 
     public void back(View view) {
@@ -89,5 +87,5 @@ public class FormPrediction extends AppCompatActivity {
         super.onDestroy();
         AudioRecorder.lastFilePath = "";
     }
-    
+
 }
