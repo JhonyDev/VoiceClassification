@@ -46,7 +46,9 @@ public class LoginActivity extends AppCompatActivity implements Info {
         loadingDialog = new Dialog(this);
         DialogUtils.initLoadingDialog(loadingDialog);
 
-        if (!SharedPrefUtils.getToken(this).isEmpty()) {
+        Log.i(TAG, "onCreate: " + SharedPrefUtils.getToken(this));
+
+        if (!SharedPrefUtils.isTokenEmpty(this)) {
             startActivity(new Intent(this, MainScreen.class));
             finish();
         }
@@ -92,6 +94,7 @@ public class LoginActivity extends AppCompatActivity implements Info {
         Log.i(TAG, "initSignIn: ");
         new GenericCall<>(MvvmUtils.getNcs().postLogin(new PostLoginPojo(strEtEmail, strEtPassword)))
                 .getMutableLiveData().observe(this, this::initResponse);
+
     }
 
     private void initResponse(GenericResponse<RegResponse> regResponseGenericResponse) {

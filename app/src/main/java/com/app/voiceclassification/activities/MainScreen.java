@@ -2,11 +2,13 @@ package com.app.voiceclassification.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.app.voiceclassification.R;
+import com.app.voiceclassification.utils.SharedPrefUtils;
 
 public class MainScreen extends AppCompatActivity {
 
@@ -22,5 +24,15 @@ public class MainScreen extends AppCompatActivity {
 
     public void history(View view) {
         startActivity(new Intent(this, HistoryActivity.class));
+    }
+
+    public void logout(View view) {
+        SharedPrefUtils.setToken(this, "");
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    }
+
+    public void profileSettings(View view) {
+        startActivity(new Intent(this, ProfileManagementActivity.class));
     }
 }

@@ -6,6 +6,7 @@ import com.app.voiceclassification.mvvm.capsules.request.PostRegPojo;
 import com.app.voiceclassification.mvvm.capsules.response.HistoryPojo;
 import com.app.voiceclassification.mvvm.capsules.response.PredicationRespCapsule;
 import com.app.voiceclassification.mvvm.capsules.response.RegResponse;
+import com.app.voiceclassification.mvvm.capsules.response.UserPojo;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 
 public interface NetworkCalls {
@@ -34,6 +36,15 @@ public interface NetworkCalls {
     Call<PredicationRespCapsule> postPrediction(
             @Header("Authorization") String token,
             @Part MultipartBody.Part profileImage);
+
+    @PUT(Urls.URL_UPDATE_PROFILE)
+    Call<UserPojo> putProfile(
+            @Header("Authorization") String token,
+            @Body UserPojo userPojo);
+
+
+    @GET(Urls.URL_UPDATE_PROFILE)
+    Call<UserPojo> getUser(@Header("Authorization") String token);
 
 
 }

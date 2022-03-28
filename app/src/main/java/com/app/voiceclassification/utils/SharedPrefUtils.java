@@ -24,6 +24,10 @@ public class SharedPrefUtils {
         return "Token " + SharedPrefUtils.getStringSharedPrefs(context, Info.TOKEN);
     }
 
+    public static boolean isTokenEmpty(Activity context) {
+        return SharedPrefUtils.getStringSharedPrefs(context, Info.TOKEN).isEmpty();
+    }
+
     public static void setToken(Activity context, String token) {
         SharedPreferences mPrefs = context.getSharedPreferences("SharedPrefs", 0);
         SharedPreferences.Editor editor = mPrefs.edit();

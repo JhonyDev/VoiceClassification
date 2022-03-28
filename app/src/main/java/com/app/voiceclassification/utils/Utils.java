@@ -12,8 +12,6 @@ import okhttp3.RequestBody;
 
 
 public class Utils {
-    public static UserPojo userPojo;
-
     public static boolean validEt(EditText etUserName, String strEtUserName) {
         if (strEtUserName.isEmpty()) {
             etUserName.setError("Field Empty");
