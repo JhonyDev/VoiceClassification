@@ -60,6 +60,12 @@ public class FormPrediction extends AppCompatActivity {
     }
 
     private void uploadFile() {
+        if (AudioRecorder.seconds < 15 | AudioRecorder.seconds > 46) {
+            Toast.makeText(this, "Audio file cannot be more less than 15 seconds", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        loadingDialog.show();
         new GenericCall<>(MvvmUtils.getNcs().postPrediction(SharedPrefUtils.getToken(this),
                 Utils.fileRequest(new File(AudioRecorder.lastFilePath),
                         "audio")))
@@ -67,6 +73,7 @@ public class FormPrediction extends AppCompatActivity {
     }
 
     private void initResponse(GenericResponse<PredicationRespCapsule> predicationRespCapsuleGenericResponse) {
+        loadingDialog.dismiss();
         if (predicationRespCapsuleGenericResponse.isSuccessful()) {
             startActivity(new Intent(this, HistoryActivity.class));
             finish();

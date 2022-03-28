@@ -17,31 +17,40 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AudioRecorder {
     public static String lastFilePath = "";
+    public static int seconds = 0;
     private static boolean isRecording = false;
     private static MediaRecorder mediaRecorder;
     private static String recordFile;
+    private static Timer countTimer;
 
     public static void startRecording(Activity context, TextView filenameText, Chronometer timer, ImageButton recordBtn) {
         if (isRecording) {
             //Stop Recording
-            stopRecording(filenameText, timer);
-
+            stopRecording(filenameText, timer, recordBtn, context);
             // Change button image and set Recording state to false
-            recordBtn.setImageDrawable(context.getDrawable(R.drawable.record_btn_stopped));
             isRecording = false;
         } else {
             //Check permission to record audio
             if (checkPermissions(context)) {
                 //Start Recording
-
-
+                seconds = 0;
                 //Start timer from 0
                 timer.setBase(SystemClock.elapsedRealtime());
                 timer.start();
-
+                countTimer = new Timer();
+                countTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        seconds++;
+                        if (seconds > 44)
+                            stopRecording(filenameText, timer, recordBtn, context);
+                    }
+                }, 0, 1000);
                 //Get app external directory path
                 String recordPath = context.getExternalFilesDir("/").getAbsolutePath();
 
@@ -71,19 +80,19 @@ public class AudioRecorder {
                 //Start Recording
                 mediaRecorder.start();
 
-
                 // Change button image and set Recording state to false
                 recordBtn.setImageDrawable(context.getDrawable(R.drawable.record_btn_recording));
                 isRecording = true;
             }
         }
-
-
     }
 
-    public static void stopRecording(TextView filenameText, Chronometer timer) {
+    public static void stopRecording(TextView filenameText, Chronometer timer, ImageButton recordBtn, Activity context) {
         //Stop Timer, very obvious
+        recordBtn.setImageDrawable(context.getDrawable(R.drawable.record_btn_stopped));
         timer.stop();
+        countTimer.cancel();
+        countTimer = null;
 
         //Change text on page to file saved
         filenameText.setText("Recording Stopped, File Saved : " + recordFile);
