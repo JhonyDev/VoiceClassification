@@ -66,6 +66,8 @@ public class FormPrediction extends AppCompatActivity {
         }
 
         loadingDialog.show();
+
+//        Post File request to the server
         new GenericCall<>(MvvmUtils.getNcs().postPrediction(SharedPrefUtils.getToken(this),
                 Utils.fileRequest(new File(AudioRecorder.lastFilePath),
                         "audio")))
@@ -73,6 +75,7 @@ public class FormPrediction extends AppCompatActivity {
     }
 
     private void initResponse(GenericResponse<PredicationRespCapsule> predicationRespCapsuleGenericResponse) {
+//      This method is used to catch responses from server
         loadingDialog.dismiss();
         if (predicationRespCapsuleGenericResponse.isSuccessful()) {
             startActivity(new Intent(this, HistoryActivity.class));

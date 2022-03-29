@@ -2,7 +2,6 @@ package com.app.voiceclassification.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +26,7 @@ public class MainScreen extends AppCompatActivity {
     }
 
     public void logout(View view) {
+//      flushing token in shared preferences
         SharedPrefUtils.setToken(this, "");
         startActivity(new Intent(this, LoginActivity.class));
         finish();

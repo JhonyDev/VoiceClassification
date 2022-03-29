@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements Info {
 
         Log.i(TAG, "onCreate: " + SharedPrefUtils.getToken(this));
 
+//        Check if token already exist in shared preferences
         if (!SharedPrefUtils.isTokenEmpty(this)) {
             startActivity(new Intent(this, MainScreen.class));
             finish();
@@ -67,21 +68,23 @@ public class LoginActivity extends AppCompatActivity implements Info {
             etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
             isPassVisible = false;
         }
-
     }
 
     private void castStrings() {
+//        Casting strings from editText to variables
         strEtEmail = etEmail.getText().toString();
         strEtPassword = etPassword.getText().toString();
     }
 
     private boolean isEverythingValid() {
+//        Check whether corresponding fields are empty or not
         if (!Utils.validEt(etEmail, strEtEmail))
             return false;
         return Utils.validEt(etPassword, strEtPassword);
     }
 
     public void Login(View view) {
+//        This method runs when login button is clicked
         castStrings();
         if (!isEverythingValid())
             return;
@@ -92,20 +95,24 @@ public class LoginActivity extends AppCompatActivity implements Info {
         castStrings();
         loadingDialog.show();
         Log.i(TAG, "initSignIn: ");
+//        Sending login request to server
         new GenericCall<>(MvvmUtils.getNcs().postLogin(new PostLoginPojo(strEtEmail, strEtPassword)))
                 .getMutableLiveData().observe(this, this::initResponse);
 
     }
 
     private void initResponse(GenericResponse<RegResponse> regResponseGenericResponse) {
+//        Catching login response from  server
         Log.i(TAG, "initResponse: " + regResponseGenericResponse.getErrorMessages());
         loadingDialog.dismiss();
         if (regResponseGenericResponse.isSuccessful()) {
+//            Saving access token to shared preferences
             SharedPrefUtils.setToken(this, regResponseGenericResponse.getResponse().getKey());
             Log.i(TAG, "initResponse: " + regResponseGenericResponse.getResponse().getKey());
             startActivity(new Intent(this, MainScreen.class));
             finish();
         } else {
+//            Show Toast for every error message
             MvvmUtils.printErrors(this, regResponseGenericResponse);
             Toast.makeText(this, "Error occurred please check connection", Toast.LENGTH_SHORT).show();
         }

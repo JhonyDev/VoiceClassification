@@ -31,11 +31,11 @@ public interface NetworkCalls {
     @GET(Urls.URL_PREV_HISTORY)
     Call<List<HistoryPojo>> getHistory(@Header("Authorization") String token);
 
-    @POST(Urls.URL_POST_IMAGE_PROCESS)
+    @POST(Urls.URL_POST_PREDICTION)
     @Multipart
     Call<PredicationRespCapsule> postPrediction(
             @Header("Authorization") String token,
-            @Part MultipartBody.Part profileImage);
+            @Part MultipartBody.Part audioFile);
 
     @PUT(Urls.URL_UPDATE_PROFILE)
     Call<UserPojo> putProfile(
